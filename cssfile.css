@@ -1,0 +1,86 @@
+html, body {
+  font-family: sans-serif;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+}
+
+h1 {
+  font-style: italic;
+  font-family: 'Lobster';
+  text-align: center;
+  font-size: 3rem;
+}
+
+p {
+  max-width: 65%;
+  min-width: 500px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.6rem;
+}
+
+div {
+  padding-right: 30px;
+  height: 100%;
+  width: 100%;
+}
+
+
+.whole {
+  display: flex;
+}
+
+.main {
+  text-align:justify;
+  font-size: 20px;
+  font-style: italic;
+  background-image: url("http://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials-hero-00e10b1f.jpg");
+  background-size: cover;
+  padding-left: 30px;
+  min-width: 75%;
+}
+
+.list {
+  font-size: 20px;
+  text-align: left;
+  font-style: italic;
+  font-family: 'Chewy',cursive;
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd72fivorROnLsap72h1YevnYAmlMNXLD--JWR-I0YB8MWMJvjrg");
+  background-size: cover;
+  background-color: #0000FF;
+  max-width: 25%;
+  min-width: 140px;
+  flex: 1;
+}
+
+.list h1 {
+  padding-left: 20px;
+}
+
+#link{
+  font-size: 30px;
+  font-family: 'Chewy',fantasy;
+  cursor: pointer;
+  color:#280409;
+}
+
+h3{
+  text-align: center;
+  font-family: 'Chewy',cursive;
+  font-style: italic;
+  color:#380232;
+}
+
+.images{
+  overflow: hidden;
+}
+
+.images img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
