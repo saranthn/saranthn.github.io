@@ -1,0 +1,55 @@
+html{
+  background-color: #FF5733
+}
+
+h1
+{
+  font-family: 'Lobster',cursive;
+  font-size: 60px;
+  text-align: center;
+  text-decoration-color: red;
+}
+
+#num1,#num2,#num3{
+  background-color: #220F0A;
+width: 30%;
+border-radius: 10px;
+height:190px;
+font-size: 120px;
+line-height:200px;
+display: inline-block;
+text-align: center;
+font-family: 'Lobster', cursive;
+color: #BB0C0C;
+}
+
+#main{
+  font-size: 40px;
+  font-family: Chewy,cursive;
+  color: #150A3B;
+  text-align: center;
+}
+
+
+
+
+.button {
+    background-color: #3B0A36;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 40px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+.button:hover {
+  color: #FFF;
+  background: #900;
+  width: 50%;
+
+}
