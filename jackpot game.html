@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="jackpot.css">
+    <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" />
+    <link href="http://fonts.googleapis.com/css?family=Chewy" rel="stylesheet" type="text/css" />
+  <script>
+   var point=0;
+  function spin() {
+  var a=Math.ceil(((Math.random() * 10) )/2);
+  var b=Math.ceil(((Math.random() * 10) )/2);
+  var c=Math.ceil(((Math.random() * 10) )/2);
+  if(a==b&&b==c)
+  {
+    point+=50;
+    document.getElementById("result").innerHTML="yaay!! YOU WON";
+    document.getElementById("points").innerHTML=point;
+  }
+  else {
+    document.getElementById("result").innerHTML="try again";
+  }
+  document.getElementById("num1").innerHTML=a;
+  document.getElementById("num2").innerHTML=b;
+  document.getElementById("num3").innerHTML=c;
+
+  }
+  </script>
+  <title>JACKPOT CHERRY GAME</title>
+</head>
+<body id="main">
+  <h1>JACKPOT CHERRY GAME</h1>
+  <div id="num1">0</div>
+  <div id="num2">0</div>
+  <div id="num3">0</div>
+  <div id="button"><button class="button" onclick="spin()">SPIN TO WIN</button></id>
+  <p id="result"></p>
+  POINTS:  <div id="points">0</div>
+</body>
+</html>
