@@ -2,11 +2,15 @@
 
 var board;
 var bow;
+var arrow;
+var noarrows = 0;
+var prevnoarrows = 0;
 
 
 function startGame() {
   board = new drawComponent(70);
   bow = new drawBow(250);
+  arrow = new drawArrow(60,250);
   myGameArea.start();
 
 }
@@ -29,7 +33,43 @@ var myGameArea = {
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
     }
+}
+
+function drawArrow(x,y) {
+  this.y = y;
+  this.x = x;
+  this.speedY = 0;
+  this.speedX = 0;
+  this.update = function () {
+    var ctx = myGameArea.context;
+    ctx.moveTo(this.x,this.y+50);
+    ctx.lineTo(this.x+50,this.y+50);
+    ctx.stroke();
+  }
+  this.newPos = function (){
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if(this.x == 1350){
+        this.x = 70;
+        noarrows++;
+      }
+
+  }
+  this.crashWith = function(otherobj) {
+        var arrowRight = this.x + 50;
+        var arrowHeight = this.y + 50;
+        var boardCenter = otherobj.cenheight;
+        var crash = false;
+        if ((arrowRight<1150)&&(arrowRight>1050)&&(arrowHeight<boardCenter+50)&&(arrowHeight>boardCenter-50)) {
+           crash = true;
+        }
+        return crash;
+    }
+
 }
 
 function drawBow(lineStart) {
@@ -86,15 +126,38 @@ function drawComponent(y) {
 
 
 function updateGameArea() {
-    myGameArea.clear();
+
     board.cenheight+=2;
     if(board.cenheight==600)
     board.cenheight = 0;
-
+    arrow.speedY = 0;
     bow.speedY = 0;
-    if (myGameArea.key && myGameArea.key == 38) {bow.speedY = -1; }
-    if (myGameArea.key && myGameArea.key == 40) {bow.speedY = 1; }
-    board.update();
-    bow.newPos();
-    bow.update();
+    if (myGameArea.key && myGameArea.key == 38) {
+      bow.speedY = -1;
+      arrow.speedY = -1;
+   }
+    if (myGameArea.key && myGameArea.key == 40) {
+      bow.speedY = 1;
+      arrow.speedY = 1;
+   }
+    if (myGameArea.key && myGameArea.key == 32) {
+      arrow.speedX = 10;
+   }
+   if(noarrows!=prevnoarrows){
+     arrow.speedX = 0;
+     prevnoarrows++;
+   }
+
+   if(arrow.crashWith(board)){
+     myGameArea.stop();
+   }
+   else{
+          myGameArea.clear();
+          board.update();
+          arrow.newPos();
+          bow.newPos();
+          bow.update();
+          arrow.update();
+   }
+
 }
