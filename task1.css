@@ -1,4 +1,23 @@
+html{
+  background-color: #000000;
+}
+
 canvas {
     border: 1px solid #d3d3d3;
     background-color: #ffff45;
+}
+
+#score{
+  text-align: center;
+  color: #1029B4;
+  font-size: 30px;
+  font-style: italic;
+  font-family: 'Lobster',cursive;
+}
+
+button{
+  color: #8710B4;
+  font-family: 'Chewy',cursive;
+  font-size: 30px;
+  text-align: center;
 }

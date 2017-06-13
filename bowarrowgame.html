@@ -2,6 +2,8 @@
 <html>
 <head>
    <meta name="viewport" content="width=device-width", initial-scale="1.0">
+   <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" />
+   <link href="http://fonts.googleapis.com/css?family=Chewy" rel="stylesheet" type="text/css" />
   <title>
     Spider Task 1
   </title>
@@ -9,6 +11,12 @@
 </head>
 <body onload ="startGame()">
     <script type ="text/javascript" src ="Dtask1.js" ></script>
-    <p id = "score"></p><button onclick="myGameArea.pause()">PAUSE</button>
+    <p id = "score">
+    <center>
+      <button id="pauseBut" onclick="myGameArea.pause()">PAUSE</button>
+      <button id="restBut" onclick="restart()">RESTART</button>
+    </center>
+    </p>
+
 </body>
 </html>

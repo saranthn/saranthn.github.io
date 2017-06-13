@@ -3,21 +3,49 @@
 var board;
 var bow;
 var arrow;
+var myBackground;
 var noarrows = 0;
 var prevnoarrows = 0;
 var points = 0;
 var pausedGame = 0;
+var arrowsLeft = 10-noarrows;
 
 
 function startGame() {
-
+  myBackground = new backgroundimage("http://orig07.deviantart.net/93af/f/2012/224/8/7/game_background_by_garbo_x-d5asm0x.png");
   board = new drawComponent(70);
   bow = new drawBow(250);
-  arrow = new drawArrow(60,250);
+  arrow = new drawArrow(60,248);
   myGameArea.start();
 
 }
 
+function backgroundimage(source) {
+
+  this.image = new Image();
+  this.image.src = source;
+
+   this.update = function () {
+     var ctx = myGameArea.context;
+     ctx.drawImage(this.image,0,0,1350,540);
+
+   }
+
+}
+
+function restart() {
+  points=0;
+  noarrows =0 ;
+  prevnoarrows =0 ;
+  pausedGame = 0;
+  arrowsLeft = 10;
+  clearInterval(myGameArea.interval);
+    myBackground = new backgroundimage("http://orig07.deviantart.net/93af/f/2012/224/8/7/game_background_by_garbo_x-d5asm0x.png");
+  board = new drawComponent(70);
+  bow = new drawBow(250);
+  arrow = new drawArrow(60,248);
+  myGameArea.start();
+}
 
 var myGameArea = {
     canvas : document.createElement("canvas"),
@@ -28,6 +56,7 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
         window.addEventListener('keydown', function (e) {
+           e.preventDefault();
           myGameArea.key = e.keyCode;
         })
         window.addEventListener('keyup', function (e) {
@@ -43,10 +72,12 @@ var myGameArea = {
     pause : function () {
             if (!pausedGame) {
             clearInterval(this.interval);
+            document.getElementById("pauseBut").innerText = "RESUME";
             pausedGame= 1;
             }
             else if (pausedGame) {
               this.interval = setInterval(updateGameArea, 20);
+              document.getElementById("pauseBut").innerText = "PAUSE";
             pausedGame = 0;
             }
     }
@@ -57,15 +88,16 @@ function drawArrow(x,y) {
   this.x = x;
   this.speedY = 0;
   this.speedX = 0;
+  this.image = new Image();
+  this.image.src = "https://www.spreadshirt.co.uk/image-server/v1/designs/14056350,width=178,height=178/medieval-archery-arrow-broadhead-by-patjila.png";
   this.update = function () {
     var ctx = myGameArea.context;
-    ctx.moveTo(this.x,this.y+50);
-    ctx.lineTo(this.x+50,this.y+50);
-    ctx.stroke();
+    ctx.drawImage(this.image,this.x,this.y,130,130);
   }
   this.newPos = function (){
       this.x += this.speedX;
      this.y += this.speedY;
+     //console.log(this.x);
 
 
       if(this.x == 1350){
@@ -77,11 +109,14 @@ function drawArrow(x,y) {
 
 
   this.crashWith = function(board) {
-        var arrowRight = this.x + 50;
-        var arrowHeight = this.y + 50;
+        var arrowRight =this.x + 130;
+        var arrowHeight = this.y + 65;
         var boardCenter = board.cenheight;
         var crash = false;
-        if(arrowRight == 1100){
+        //console.log(arrowRight);
+        //console.log(board.cenheight);
+       if(arrowRight == 1105)
+        {console.log("hello");
           if (arrowHeight<board.cenheight+10&&arrowHeight>board.cenheight-10) {
              crash = true;
              points +=100;
@@ -117,19 +152,15 @@ function drawArrow(x,y) {
 function drawBow(lineStart) {
   this.lineStart = lineStart;
   this.speedY = 0;
-  this.update = function () {
-    var ctx = myGameArea.context;
-    ctx.moveTo(70,this.lineStart);
-    ctx.lineTo(70,this.lineStart+100);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(20,this.lineStart+50,70,7*Math.PI/4,Math.PI/4);
-    ctx.stroke();
-    ctx.moveTo(60,this.lineStart+50);
-    ctx.lineTo(110,this.lineStart+50);
-    ctx.stroke();
+  this.image = new Image();
+  this.image.src = "https://www.shareicon.net/download/2016/09/05/825222_miscellaneous_512x512.png";
 
-  }
+   this.update = function () {
+     var ctx = myGameArea.context;
+     ctx.drawImage(this.image,70,this.lineStart,130,130);
+
+   }
+
   this.newPos = function() {
       this.lineStart += this.speedY;
   }
@@ -166,7 +197,7 @@ function drawCircle(c,r,color) {
 
 function updateGameArea() {
   myGameArea.clear();
-document.getElementById("score").innerText ="POINTS : "+points;
+document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT : "+arrowsLeft;
     arrow.speedY = 0;
     bow.speedY = 0;
     if (myGameArea.key && myGameArea.key == 38 ) {
@@ -183,22 +214,43 @@ document.getElementById("score").innerText ="POINTS : "+points;
    }
     if (myGameArea.key && myGameArea.key == 32) {
       arrow.speedX = 15;
+      if(arrow.x==60){
+        arrowsLeft--;
+      }
    }
    if(noarrows!=prevnoarrows){
      arrow.speedX = 0;
      prevnoarrows++;
    }
 
+   if(arrowsLeft == -1 && arrow.x == 60){
+     document.getElementById("score").innerText ="POINTS : "+points+" "+" GAME OVER";
+
+     myGameArea.stop();
+
+   }
+
    if(arrow.crashWith(board)){
+     arrowsLeft+=3;
+     arrow.speedX =0;
      arrow.x = 60;
+     myGameArea.clear();
+     myBackground.update();
+     board.update();
+     arrow.newPos();
+     arrow.update();
+     bow.newPos();
+     bow.update();
+
    }
    else{
-
+          myBackground.update();
           board.update();
           arrow.newPos();
+          arrow.update();
           bow.newPos();
           bow.update();
-          arrow.update();
+
   }
 
 }
