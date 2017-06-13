@@ -9,9 +9,15 @@ var prevnoarrows = 0;
 var points = 0;
 var pausedGame = 0;
 var arrowsLeft = 10-noarrows;
+var mySound;
+var myMusic;
 
 
 function startGame() {
+
+  myMusic = new sound1("Blastwave_FX_ArrowImpactWood_BW.54267.mp3");
+  mySound = new sound("POL-cooking-mania-short.wav");
+  mySound.play();
   myBackground = new backgroundimage("http://orig07.deviantart.net/93af/f/2012/224/8/7/game_background_by_garbo_x-d5asm0x.png");
   board = new drawComponent(70);
   bow = new drawBow(250);
@@ -33,7 +39,40 @@ function backgroundimage(source) {
 
 }
 
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.setAttribute("loop",true);
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
+
+function sound1(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");;
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
+
 function restart() {
+  mySound.play();
+  myMusic.play();
   points=0;
   noarrows =0 ;
   prevnoarrows =0 ;
@@ -71,11 +110,13 @@ var myGameArea = {
     },
     pause : function () {
             if (!pausedGame) {
+            mySound.stop();
             clearInterval(this.interval);
             document.getElementById("pauseBut").innerText = "RESUME";
             pausedGame= 1;
             }
             else if (pausedGame) {
+              mySound.play();
               this.interval = setInterval(updateGameArea, 20);
               document.getElementById("pauseBut").innerText = "PAUSE";
             pausedGame = 0;
@@ -231,6 +272,7 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
    }
 
    if(arrow.crashWith(board)){
+     myMusic.play();
      arrowsLeft+=3;
      arrow.speedX =0;
      arrow.x = 60;
