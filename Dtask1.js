@@ -15,6 +15,7 @@ var obsSound;
 var myMusic;
 
 
+
 function startGame() {
 
   myMusic = new sound1("Blastwave_FX_ArrowImpactWood_BW.54267.mp3");
@@ -111,6 +112,9 @@ function restart() {
   myGameArea.start();
 }
 
+
+
+
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
@@ -119,6 +123,7 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
+
         window.addEventListener('keydown', function (e) {
            e.preventDefault();
           myGameArea.key = e.keyCode;
@@ -254,11 +259,15 @@ function drawBow(lineStart) {
 
 function drawComponent(y) {
   this.cenheight = y;
-  this.speedY = 5;
+  this.speedY = Math.random()*10;
+  //console.log(this.speedY);
   this.update = function () {
     this.cenheight += this.speedY;
-    if((this.cenheight+60) == myGameArea.canvas.height ||(this.cenheight-50)==0){
-      this.speedY = -this.speedY;
+    if((this.cenheight+60) > myGameArea.canvas.height){
+      this.speedY = -Math.random()*10;
+    }
+    else if(this.cenheight-60<0){
+      this.speedY = Math.random()*10;
     }
     drawCircle(this.cenheight,60,"#000000");
     drawCircle(this.cenheight,50,"#00A2FF");
@@ -310,14 +319,14 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
 
    if(arrowsLeft == -1 && arrow.x == 60){
      document.getElementById("score").innerText ="POINTS : "+points+" "+" GAME OVER";
-
+     mySound.pause();
      myGameArea.stop();
 
    }
 
    if(arrow.crashWith(board)){
      myMusic.play();
-     arrowsLeft+=3;
+     arrowsLeft+=2;
      arrow.speedX =0;
      arrow.x = 60;
      myGameArea.clear();
@@ -329,6 +338,7 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
      arrow.update();
      bow.newPos();
      bow.update();
+
 
    }
    else if (arrow.hitWith(obstacle)) {
@@ -345,6 +355,7 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
      bow.newPos();
      bow.update();
 
+
    }
    else{
 
@@ -356,6 +367,7 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
           arrow.update();
           bow.newPos();
           bow.update();
+
 
   }
 
