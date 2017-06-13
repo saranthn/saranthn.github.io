@@ -3,6 +3,7 @@
 var board;
 var bow;
 var arrow;
+var obstacle;
 var myBackground;
 var noarrows = 0;
 var prevnoarrows = 0;
@@ -10,6 +11,7 @@ var points = 0;
 var pausedGame = 0;
 var arrowsLeft = 10-noarrows;
 var mySound;
+var obsSound;
 var myMusic;
 
 
@@ -17,7 +19,9 @@ function startGame() {
 
   myMusic = new sound1("Blastwave_FX_ArrowImpactWood_BW.54267.mp3");
   mySound = new sound("POL-cooking-mania-short.wav");
+  obsSound = new sound1("industrial_hand_cart_bounce_down_single_concrete_step_with_boxes_on_002.mp3");
   mySound.play();
+  obstacle = new drawObs(800,330);
   myBackground = new backgroundimage("http://orig07.deviantart.net/93af/f/2012/224/8/7/game_background_by_garbo_x-d5asm0x.png");
   board = new drawComponent(70);
   bow = new drawBow(250);
@@ -25,6 +29,26 @@ function startGame() {
   myGameArea.start();
 
 }
+
+function drawObs(x,y) {
+  this.y = y;
+  this.x = x;
+  this.speedY = 0;
+  this.speedX = 0;
+  this.image = new Image();
+  this.image.src = "https://vignette3.wikia.nocookie.net/mysingingmonsters/images/3/35/Air_Island_Medium_Rock.png/revision/latest?cb=20121204215537";
+  this.update = function () {
+    var ctx = myGameArea.context;
+    ctx.drawImage(this.image,this.x,this.y,130,130);
+  }
+  this.newPos = function (){
+      this.x += this.speedX;
+     this.y += this.speedY;
+
+}
+}
+
+
 
 function backgroundimage(source) {
 
@@ -80,6 +104,7 @@ function restart() {
   arrowsLeft = 10;
   clearInterval(myGameArea.interval);
     myBackground = new backgroundimage("http://orig07.deviantart.net/93af/f/2012/224/8/7/game_background_by_garbo_x-d5asm0x.png");
+    obstacle = new drawObs(800,330);
   board = new drawComponent(70);
   bow = new drawBow(250);
   arrow = new drawArrow(60,248);
@@ -188,6 +213,25 @@ function drawArrow(x,y) {
         return crash;
     }
 
+      this.hitWith = function(obstacle) {
+
+            var arrowRight =this.x + 130;
+            var arrowHeight = this.y + 65;
+            var crash = false;
+            console.log(arrowRight);
+           if(arrowRight == 805)
+            {console.log("hello");
+              if (arrowHeight<obstacle.y+110&&arrowHeight>obstacle.y+10) {
+                 crash = true;
+              }
+            }
+
+
+            return crash;
+        }
+
+
+
 }
 
 function drawBow(lineStart) {
@@ -279,6 +323,23 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
      myGameArea.clear();
      myBackground.update();
      board.update();
+     obstacle.newPos();
+     obstacle.update();
+     arrow.newPos();
+     arrow.update();
+     bow.newPos();
+     bow.update();
+
+   }
+   else if (arrow.hitWith(obstacle)) {
+     obsSound.play();
+     arrow.speedX =0;
+     arrow.x = 60;
+     myGameArea.clear();
+     myBackground.update();
+     board.update();
+     obstacle.newPos();
+     obstacle.update();
      arrow.newPos();
      arrow.update();
      bow.newPos();
@@ -286,7 +347,10 @@ document.getElementById("score").innerText ="POINTS : "+points+" "+" ARROWS LEFT
 
    }
    else{
+
           myBackground.update();
+          obstacle.newPos();
+          obstacle.update();
           board.update();
           arrow.newPos();
           arrow.update();
